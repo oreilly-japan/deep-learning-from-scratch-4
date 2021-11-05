@@ -1,6 +1,3 @@
-ゼロから作る Deep Learning ❷
-==========================
-
 [<img src="https://raw.githubusercontent.com/oreilly-japan/deep-learning-from-scratch-4/images/deep-learning-from-scratch-4.png" width="200px">](https://www.amazon.co.jp/dp/4873119758)
 
 書籍『[ゼロから作るDeep Learning ❹ 強化学習編](https://www.amazon.co.jp/dp/4873119758)』(オライリー・ジャパン)のサポートサイトです。本書籍で使用するソースコードがまとめられています。
