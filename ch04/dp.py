@@ -12,5 +12,6 @@ while True:
 
     cnt += 1
     if delta < 0.0001:
-        print(V, cnt)
+        print(V)
+        print(cnt)
         break
