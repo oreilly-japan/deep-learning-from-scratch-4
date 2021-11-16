@@ -9,10 +9,9 @@ def sample():
 
 
 trial = 100
-v = 0
-cnt = 0
+V, n = 0, 0
 for _ in range(trial):
     s = sample()
-    cnt += 1
-    v += (s - v) / cnt
-    print(v)
+    n += 1
+    V += (s - V) / n
+    print(V)
