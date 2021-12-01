@@ -15,7 +15,7 @@ def eval_onestep(pi, V, env, gamma=0.9):
         for action, action_prob in action_probs.items():
             next_state = env.next_state(state, action)
             if next_state is not None:
-                r = env.reward_func(state, action, next_state)
+                r = env.reward(state, action, next_state)
                 new_v += action_prob * (r + gamma * V[next_state])
 
         delta = max(delta, abs(V[state] - new_v))

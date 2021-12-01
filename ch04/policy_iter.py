@@ -27,7 +27,7 @@ def get_greedy_policy(V, env, gamma):
             value = 0
 
             if next_state is not None:
-                r = env.reward_func(state, action, next_state)
+                r = env.reward(state, action, next_state)
                 value += r + gamma * V[next_state]
             action_values[action] = value
 

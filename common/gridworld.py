@@ -57,7 +57,7 @@ class GridWorld:
             next_state = state
         return next_state
 
-    def reward_func(self, state, action, next_state):
+    def reward(self, state, action, next_state):
         return self.reward_map[next_state]
 
     def reset(self):
@@ -67,7 +67,7 @@ class GridWorld:
     def step(self, action):
         state = self.agent_state
         next_state = self.next_state(state, action)
-        reward = self.reward_func(state, action, next_state)
+        reward = self.reward(state, action, next_state)
         done = (next_state == self.goal_state)
 
         self.agent_state = next_state

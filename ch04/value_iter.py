@@ -16,7 +16,7 @@ def value_iter_onestep(env, gamma, V):
             next_state = env.next_state(state, action)
 
             if next_state is not None:
-                r = env.reward_func(state, action, next_state)
+                r = env.reward(state, action, next_state)
                 value = r + gamma * V[next_state]
                 action_values.append(value)
 
