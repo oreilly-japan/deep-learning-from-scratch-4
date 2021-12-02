@@ -37,12 +37,12 @@ class SarsaOffPolicyAgent:
 
         if done:
             next_q = 0
-            rho = 0
+            rho = 1
         else:
             next_q = self.Q[next_state, next_action]
             rho = self.pi[next_state][next_action] / self.b[next_state][next_action]
 
-        target = self.gamma * rho * next_q + reward
+        target = rho * (self.gamma * next_q + reward)
         self.Q[state, action] += (target - self.Q[state, action]) * self.alpha
 
         self.pi[state] = greedy_action_probs(self.Q, state, 0)
@@ -53,7 +53,7 @@ env = GridWorld()
 experiences = deque(maxlen=2)
 agent = SarsaOffPolicyAgent()
 
-episodes = 10000
+episodes = 1000
 for episode in range(episodes):
     state = env.reset()
     agent.reset()
