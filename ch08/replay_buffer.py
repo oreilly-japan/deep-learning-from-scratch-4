@@ -2,10 +2,6 @@ from collections import deque
 import random
 import numpy as np
 import gym
-from dezero import Model
-from dezero import optimizers
-import dezero.functions as F
-import dezero.layers as L
 
 
 class ReplayBuffer:

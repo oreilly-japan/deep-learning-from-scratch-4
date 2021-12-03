@@ -95,7 +95,6 @@ for episode in range(episodes):
 plt.xlabel('episode')
 plt.ylabel('loss')
 plt.plot(range(len(loss_list)), loss_list)
-plt.savefig('14.svg')
 plt.show()
 
 # visualize
