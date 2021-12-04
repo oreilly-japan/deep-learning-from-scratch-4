@@ -52,8 +52,7 @@ class GridWorld:
         next_state = (state[0] + move[0], state[1] + move[1])
         ny, nx = next_state
 
-        if nx < 0 or nx >= self.width or ny < 0 or ny >= self.height or \
-                self.reward_map[next_state] is None:
+        if nx < 0 or nx >= self.width or ny < 0 or ny >= self.height:
             next_state = state
         return next_state
 
