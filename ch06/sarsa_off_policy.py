@@ -50,7 +50,6 @@ class SarsaOffPolicyAgent:
 
 
 env = GridWorld()
-experiences = deque(maxlen=2)
 agent = SarsaOffPolicyAgent()
 
 episodes = 1000
