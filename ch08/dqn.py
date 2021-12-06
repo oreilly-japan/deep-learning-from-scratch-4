@@ -61,6 +61,7 @@ class DQNAgent:
         self.qnet_target = QNet(self.action_size)
         self.optimizer = optimizers.Adam(self.lr)
         self.optimizer.setup(self.qnet)
+        self.sync_qnet()
 
     def get_action(self, state):
         if np.random.rand() < self.epsilon:
@@ -95,6 +96,7 @@ class DQNAgent:
 
 episodes = 300  # 10000
 sync_interval = 20
+total_step = 0
 env = gym.make('CartPole-v0')
 agent = DQNAgent()
 reward_log = []
@@ -105,6 +107,7 @@ for episode in range(episodes):
     sum_reward = 0
 
     while not done:
+        total_step += 1
         if agent.epsilon > 0.05:
             agent.epsilon -= (1 / 5000)
         #agent.epsilon = max(0.01, 0.1 - 0.01*(episode/200)) #Linear annealing from 10% to 1%
@@ -115,8 +118,8 @@ for episode in range(episodes):
         state = next_state
         sum_reward += reward
 
-    if episode % sync_interval == 0:
-        agent.sync_qnet()
+        if total_step % sync_interval == 0:
+            agent.sync_qnet()
 
     reward_log.append(sum_reward)
     if episode % 10 == 0:
