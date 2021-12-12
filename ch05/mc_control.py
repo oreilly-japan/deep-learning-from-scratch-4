@@ -51,7 +51,7 @@ if __name__ == '__main__':
     env = GridWorld()
     agent = McAgent()
 
-    episodes = 1000
+    episodes = 10000
     for episode in range(episodes):
         state = env.reset()
         agent.reset()
