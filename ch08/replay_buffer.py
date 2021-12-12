@@ -37,6 +37,8 @@ for episode in range(10):
         action = 0
         next_state, reward, done, info = env.step(action)
         replay_buffer.add(state, action, reward, next_state, done)
+    state = env.reset()
+    done = False
 
 state, action, reward, next_state, done = replay_buffer.get_batch()
 print(state.shape)  # (32, 4)
