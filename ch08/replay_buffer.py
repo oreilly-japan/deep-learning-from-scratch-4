@@ -27,19 +27,20 @@ class ReplayBuffer:
         return state, action, reward, next_state, done
 
 
-env = gym.make('CartPole-v1')
-replay_buffer = ReplayBuffer(buffer_size=100, batch_size=3)
+env = gym.make('CartPole-v0')
+replay_buffer = ReplayBuffer(buffer_size=10000, batch_size=32)
 state = env.reset()
 done = False
 
-while not done:
-    action = 0
-    next_state, reward, done, info = env.step(action)
-    replay_buffer.add(state, action, reward, next_state, done)
+for episode in range(10):
+    while not done:
+        action = 0
+        next_state, reward, done, info = env.step(action)
+        replay_buffer.add(state, action, reward, next_state, done)
 
 state, action, reward, next_state, done = replay_buffer.get_batch()
-print(state.shape)  # (3, 4)
-print(action.shape)  # (3,)
-print(reward.shape)  # (3,)
-print(next_state.shape)  # (3, 4)
-print(done.shape)  # (3,)
+print(state.shape)  # (32, 4)
+print(action.shape)  # (32,)
+print(reward.shape)  # (32,)
+print(next_state.shape)  # (32, 4)
+print(done.shape)  # (32,)
