@@ -4,30 +4,30 @@ import matplotlib.pyplot as plt
 
 class Bandit:
     def __init__(self, arms=10):
-        self.arms = arms
         self.rates = np.random.rand(arms)
 
     def play(self, arm):
         rate = self.rates[arm]
-        reward = rate > np.random.rand()
-        return int(reward)
+        if rate > np.random.rand():
+            return 1
+        else:
+            return 0
 
 
 class Agent:
     def __init__(self, epsilon, action_size=10):
         self.epsilon = epsilon
-        self.qs = np.zeros(action_size)
+        self.Qs = np.zeros(action_size)
         self.ns = np.zeros(action_size)
 
     def update(self, action, reward):
-        a, r = action, reward
-        self.ns[a] += 1
-        self.qs[a] += (r - self.qs[a]) / self.ns[a]
+        self.ns[action] += 1
+        self.Qs[action] += (reward - self.Qs[action]) / self.ns[action]
 
     def get_action(self):
         if np.random.rand() < self.epsilon:
-            return np.random.randint(0, len(self.qs))
-        return np.argmax(self.qs)
+            return np.random.randint(0, len(self.Qs))
+        return np.argmax(self.Qs)
 
 
 if __name__ == '__main__':
@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
     bandit = Bandit()
     agent = Agent(epsilon)
-    sum_r = 0
+    total_reward = 0
     total_rewards = []
     rates = []
 
@@ -44,12 +44,12 @@ if __name__ == '__main__':
         action = agent.get_action()
         reward = bandit.play(action)
         agent.update(action, reward)
-        sum_r += reward
+        total_reward += reward
 
-        total_rewards.append(sum_r)
-        rates.append(sum_r / (step+1))
+        total_rewards.append(total_reward)
+        rates.append(total_reward / (step + 1))
 
-    print(sum_r)
+    print(total_reward)
 
     plt.ylabel('Total reward')
     plt.xlabel('Steps')

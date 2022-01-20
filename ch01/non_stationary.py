@@ -10,28 +10,29 @@ class NonStatBandit:
 
     def play(self, arm):
         rate = self.rates[arm]
-        reward = rate > np.random.rand()
         self.rates += 0.1 * np.random.randn(self.arms)  # Add noise
-        return int(reward)
+        if rate > np.random.rand():
+            return 1
+        else:
+            return 0
 
 
 class AlphaAgent:
     def __init__(self, epsilon, alpha, actions=10):
         self.epsilon = epsilon
-        self.qs = np.zeros(actions)
+        self.Qs = np.zeros(actions)
         self.alpha = alpha
 
     def update(self, action, reward):
-        a, r = action, reward
-        self.qs[a] += (r - self.qs[a]) * self.alpha  # alphaで更新
+        self.Qs[action] += (reward - self.Qs[action]) * self.alpha  # alphaで更新
 
     def get_action(self):
         if np.random.rand() < self.epsilon:
-            return np.random.randint(0, len(self.qs))
-        return np.argmax(self.qs)
+            return np.random.randint(0, len(self.Qs))
+        return np.argmax(self.Qs)
 
 
-runs = 2000
+runs = 200
 steps = 1000
 epsilon = 0.1
 alpha = 0.8
@@ -39,7 +40,7 @@ agent_types = ['sample average', 'alpha const update']
 results = {}
 
 for agent_type in agent_types:
-    all_rates = np.zeros((runs, steps))  # (2000, 1000)
+    all_rates = np.zeros((runs, steps))  # (200, 1000)
 
     for run in range(runs):
         if agent_type == 'sample average':
@@ -48,15 +49,15 @@ for agent_type in agent_types:
             agent = AlphaAgent(epsilon, alpha)
 
         bandit = NonStatBandit()
-        sum_r = 0
+        total_reward = 0
         rates = []
 
         for step in range(steps):
             action = agent.get_action()
             reward = bandit.play(action)
             agent.update(action, reward)
-            sum_r += reward
-            rates.append(sum_r / (step+1))
+            total_reward += reward
+            rates.append(total_reward / (step + 1))
 
         all_rates[run] = rates
 
