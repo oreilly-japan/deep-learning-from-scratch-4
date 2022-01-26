@@ -86,7 +86,7 @@ class Renderer:
                         ax.text(x+0.45+offset[0], ys-y-0.5+offset[1], arrow)
 
                 if r == WALL:
-                    ax.add_patch(plt.Rectangle((x,ys-y-1), 1, 1, fc="#666"))
+                    ax.add_patch(plt.Rectangle((x,ys-y-1), 1, 1, fc=(0.4, 0.4, 0.4, 1.)))
         plt.show()
 
     def render_q(self, q, show_greedy_policy=True):
@@ -136,9 +136,9 @@ class Renderer:
                         3: (0.4, 0.4),
                     }
                     if r == WALL:
-                        ax.add_patch(plt.Rectangle((tx, ty), 1, 1, fc="#666"))
+                        ax.add_patch(plt.Rectangle((tx, ty), 1, 1, fc=(0.4, 0.4, 0.4, 1.)))
                     elif state in self.goal_state:
-                        ax.add_patch(plt.Rectangle((tx, ty), 1, 1, fc="#0f0"))
+                        ax.add_patch(plt.Rectangle((tx, ty), 1, 1, fc=(0., 1., 0., 1.)))
                     else:
 
                         tq = q[(state, action)]
