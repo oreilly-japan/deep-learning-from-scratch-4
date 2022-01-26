@@ -82,9 +82,9 @@ class DQNAgent:
         next_qs = self.qnet_target(next_state)
         next_q = next_qs.max(axis=1)
         next_q.unchain()
-        td_targt = reward + (1 - done) * self.gamma * next_q
+        td_target = reward + (1 - done) * self.gamma * next_q
 
-        loss = F.mean_squared_error(q, td_targt)
+        loss = F.mean_squared_error(q, td_target)
 
         self.qnet.cleargrads()
         loss.backward()
