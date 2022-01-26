@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 
 
 WALL = None
-IDX = 0
 
 
 class Renderer:
@@ -62,7 +61,7 @@ class Renderer:
                 if r not in (0, WALL):
                     txt = 'R ' + str(r)
                     if state == self.goal_state:
-                        txt = txt + '(G)'
+                        txt = txt + ' (GOAL)'
                     ax.text(x+.1, ys-y-0.9, txt)
 
                 if (v is not None) and r != WALL:
@@ -88,9 +87,6 @@ class Renderer:
 
                 if r == WALL:
                     ax.add_patch(plt.Rectangle((x,ys-y-1), 1, 1, fc="#666"))
-                elif state == self.goal_state:
-                    ax.add_patch(plt.Rectangle((x,ys-y-1), 1, 1, fc="#0f0"))
-
         plt.show()
 
     def render_q(self, q, show_greedy_policy=True):
@@ -119,7 +115,7 @@ class Renderer:
                     if r not in (0, WALL):
                         txt = 'R ' + str(r)
                         if state == self.goal_state:
-                            txt = txt + '(G)'
+                            txt = txt + ' (GOAL)'
                         ax.text(x+.05, ys-y-0.95, txt)
 
                     if state == self.goal_state:
@@ -153,7 +149,6 @@ class Renderer:
 
                         offset= offset_map[action]
                         ax.text(tx+offset[0], ty+offset[1], "{:12.2f}".format(tq))
-
         plt.show()
 
         if show_greedy_policy:
