@@ -39,7 +39,7 @@ class QLearningAgent:
 env = GridWorld()
 agent = QLearningAgent()
 
-episodes = 1000
+episodes = 10000
 for episode in range(episodes):
     state = env.reset()
 
