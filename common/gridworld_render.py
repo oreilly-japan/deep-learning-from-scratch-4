@@ -3,13 +3,11 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 
-WALL = None
-
-
 class Renderer:
-    def __init__(self, reward_map, goal_state):
+    def __init__(self, reward_map, goal_state, wall_state):
         self.reward_map = reward_map
         self.goal_state = goal_state
+        self.wall_state = wall_state
         self.ys = len(self.reward_map)
         self.xs = len(self.reward_map[0])
 
@@ -58,13 +56,13 @@ class Renderer:
             for x in range(xs):
                 state = (y, x)
                 r = self.reward_map[y, x]
-                if r not in (0, WALL):
+                if r != 0:
                     txt = 'R ' + str(r)
                     if state == self.goal_state:
                         txt = txt + ' (GOAL)'
                     ax.text(x+.1, ys-y-0.9, txt)
 
-                if (v is not None) and r != WALL:
+                if (v is not None) and state != self.wall_state:
                     if print_value:
                         offsets = [(0.4, -0.15), (-0.15, -0.3)]
                         key = 0
@@ -72,7 +70,7 @@ class Renderer:
                         offset = offsets[key]
                         ax.text(x+offset[0], ys-y+offset[1], "{:12.2f}".format(v[y, x]))
 
-                if policy is not None and r != WALL:
+                if policy is not None and state != self.wall_state:
                     actions = policy[state]
                     max_actions = [kv[0] for kv in actions.items() if kv[1] == max(actions.values())]
 
@@ -85,7 +83,7 @@ class Renderer:
                             continue
                         ax.text(x+0.45+offset[0], ys-y-0.5+offset[1], arrow)
 
-                if r == WALL:
+                if state == self.wall_state:
                     ax.add_patch(plt.Rectangle((x,ys-y-1), 1, 1, fc=(0.4, 0.4, 0.4, 1.)))
         plt.show()
 
@@ -112,7 +110,7 @@ class Renderer:
                 for action in action_space:
                     state = (y, x)
                     r = self.reward_map[y, x]
-                    if r not in (0, WALL):
+                    if r != 0:
                         txt = 'R ' + str(r)
                         if state == self.goal_state:
                             txt = txt + ' (GOAL)'
@@ -135,7 +133,7 @@ class Renderer:
                         2: (-0.2, 0.4),
                         3: (0.4, 0.4),
                     }
-                    if r == WALL:
+                    if state == self.wall_state:
                         ax.add_patch(plt.Rectangle((tx, ty), 1, 1, fc=(0.4, 0.4, 0.4, 1.)))
                     elif state in self.goal_state:
                         ax.add_patch(plt.Rectangle((tx, ty), 1, 1, fc=(0., 1., 0., 1.)))

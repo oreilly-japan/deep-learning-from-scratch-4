@@ -14,10 +14,11 @@ class GridWorld:
 
         self.reward_map = np.array(
             [[0, 0, 0, 1.0],
-             [0, None, 0, -1.0],
+             [0, 0, 0, -1.0],
              [0, 0, 0, 0]]
         )
         self.goal_state = (0, 3)
+        self.wall_state = (1, 1)
         self.start_state = (2, 0)
         self.agent_state = self.start_state
 
@@ -42,19 +43,16 @@ class GridWorld:
                 yield (h, w)
 
     def next_state(self, state, action):
-        is_goal = (state == self.goal_state)
-        is_wall = (self.reward_map[state] is None)
-        if is_goal or is_wall:
-            return None
-
         action_move_map = [(-1, 0), (1, 0), (0, -1), (0, 1)]
         move = action_move_map[action]
         next_state = (state[0] + move[0], state[1] + move[1])
         ny, nx = next_state
 
-        if nx < 0 or nx >= self.width or ny < 0 or ny >= self.height or \
-                self.reward_map[next_state] is None:
+        if nx < 0 or nx >= self.width or ny < 0 or ny >= self.height:
             next_state = state
+        elif next_state == self.wall_state:
+            next_state = state
+
         return next_state
 
     def reward(self, state, action, next_state):
@@ -74,9 +72,11 @@ class GridWorld:
         return next_state, reward, done
 
     def render_v(self, v=None, policy=None, print_value=True):
-        renderer = render_helper.Renderer(self.reward_map, self.goal_state)
+        renderer = render_helper.Renderer(self.reward_map, self.goal_state,
+                                          self.wall_state)
         renderer.render_v(v, policy, print_value)
 
     def render_q(self, q=None, print_value=True):
-        renderer = render_helper.Renderer(self.reward_map, self.goal_state)
+        renderer = render_helper.Renderer(self.reward_map, self.goal_state,
+                                          self.wall_state)
         renderer.render_q(q, print_value)
