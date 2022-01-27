@@ -6,27 +6,32 @@ from common.gridworld import GridWorld
 
 
 def eval_onestep(pi, V, env, gamma=0.9):
-    delta = 0
-
     for state in env.states():
+        if state == env.goal_state:
+            V[state] = 0
+            continue
+
         action_probs = pi[state]
         new_v = 0
-
         for action, action_prob in action_probs.items():
             next_state = env.next_state(state, action)
-            if next_state is not None:
-                r = env.reward(state, action, next_state)
-                new_v += action_prob * (r + gamma * V[next_state])
-
-        delta = max(delta, abs(V[state] - new_v))
+            r = env.reward(state, action, next_state)
+            new_v += action_prob * (r + gamma * V[next_state])
         V[state] = new_v
-
-    return V, delta
+    return V
 
 
 def policy_eval(pi, V, env, gamma, threshold=0.001):
     while True:
-        V, delta = eval_onestep(pi, V, env, gamma)
+        old_V = V.copy()
+        V = eval_onestep(pi, V, env, gamma)
+
+        delta = 0
+        for state in V.keys():
+            t = abs(V[state] - old_V[state])
+            if delta < t:
+                delta = t
+
         if delta < threshold:
             break
     return V
