@@ -24,18 +24,14 @@ def get_greedy_policy(V, env, gamma):
 
         for action in env.actions():
             next_state = env.next_state(state, action)
-            value = 0
-
-            if next_state is not None:
-                r = env.reward(state, action, next_state)
-                value += r + gamma * V[next_state]
+            r = env.reward(state, action, next_state)
+            value = r + gamma * V[next_state]
             action_values[action] = value
 
         max_action = argmax(action_values)
         action_probs = {0: 0, 1: 0, 2: 0, 3: 0}
         action_probs[max_action] = 1.0
         pi[state] = action_probs
-
     return pi
 
 
@@ -55,6 +51,7 @@ def policy_iter(env, gamma, threshold=0.001, is_render=True):
         pi = new_pi
 
     return pi
+
 
 if __name__ == '__main__':
     env = GridWorld()

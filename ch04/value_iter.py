@@ -6,45 +6,48 @@ from common.gridworld import GridWorld
 from ch04.policy_iter import get_greedy_policy
 
 
-def value_iter_onestep(env, gamma, V):
-    delta = 0
-
+def value_iter_onestep(V, env, gamma):
     for state in env.states():
-        action_values = []
+        if state == env.goal_state:
+            V[state] = 0
+            continue
 
+        action_values = []
         for action in env.actions():
             next_state = env.next_state(state, action)
+            r = env.reward(state, action, next_state)
+            value = r + gamma * V[next_state]
+            action_values.append(value)
 
-            if next_state is not None:
-                r = env.reward(state, action, next_state)
-                value = r + gamma * V[next_state]
-                action_values.append(value)
-
-        if len(action_values) > 0:
-            new_value = max(action_values)
-            delta = max(delta, abs(new_value - V[state]))
-            V[state] = new_value
-
-    return V, delta
+        V[state] = max(action_values)
+    return V
 
 
-def value_iter(env, gamma, threshold=0.001, is_render=True):
-    V = defaultdict(lambda: 0)
-
+def value_iter(V, env, gamma, threshold=0.001, is_render=True):
     while True:
         if is_render:
             env.render_v(V)
 
-        V, delta = value_iter_onestep(env, gamma, V)
+        old_V = V.copy()
+        V = value_iter_onestep(V, env, gamma)
+
+        delta = 0
+        for state in V.keys():
+            t = abs(V[state] - old_V[state])
+            if delta < t:
+                delta = t
+
         if delta < threshold:
             break
     return V
 
 
 if __name__ == '__main__':
+    V = defaultdict(lambda: 0)
     env = GridWorld()
     gamma = 0.9
-    V = value_iter(env, gamma)
+
+    V = value_iter(V, env, gamma)
 
     pi = get_greedy_policy(V, env, gamma)
     env.render_v(V, pi)
