@@ -32,7 +32,8 @@ class McAgent:
         return np.random.choice(actions, p=probs)
 
     def add(self, state, action, reward):
-        self.experience.append((state, action, reward))
+        data = (state, action, reward)
+        self.experience.append(data)
 
     def reset(self):
         self.experience.clear()
@@ -47,24 +48,23 @@ class McAgent:
             self.pi[state] = greedy_action_probs(self.Q, state, self.epsilon)
 
 
-if __name__ == '__main__':
-    env = GridWorld()
-    agent = McAgent()
+env = GridWorld()
+agent = McAgent()
 
-    episodes = 10000
-    for episode in range(episodes):
-        state = env.reset()
-        agent.reset()
+episodes = 10000
+for episode in range(episodes):
+    state = env.reset()
+    agent.reset()
 
-        while True:
-            action = agent.get_action(state)
-            next_state, reward, done = env.step(action)
+    while True:
+        action = agent.get_action(state)
+        next_state, reward, done = env.step(action)
 
-            agent.add(state, action, reward)
-            if done:
-                agent.update()
-                break
+        agent.add(state, action, reward)
+        if done:
+            agent.update()
+            break
 
-            state = next_state
+        state = next_state
 
-    env.render_q(agent.Q)
+env.render_q(agent.Q)

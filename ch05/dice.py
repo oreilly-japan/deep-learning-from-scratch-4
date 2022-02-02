@@ -8,7 +8,7 @@ def sample(dices=2):
     return x
 
 
-trial = 100
+trial = 1000
 V, n = 0, 0
 for _ in range(trial):
     s = sample()
