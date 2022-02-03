@@ -26,7 +26,7 @@ class QLearningAgent:
             next_qs = [self.Q[next_state, a] for a in range(self.action_size)]
             next_q_max = max(next_qs)
 
-        target = self.gamma * next_q_max + reward
+        target = reward + self.gamma * next_q_max
         self.Q[state, action] += (target - self.Q[state, action]) * self.alpha
 
 

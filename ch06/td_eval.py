@@ -21,7 +21,7 @@ class TdAgent:
 
     def eval(self, state, reward, next_state, done):
         next_V = 0 if done else self.V[next_state]
-        target = self.gamma * next_V + reward
+        target = reward + self.gamma * next_V
         self.V[state] += (target - self.V[state]) * self.alpha
 
 
