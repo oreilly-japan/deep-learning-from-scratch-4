@@ -104,5 +104,3 @@ for state in env.states():
         q = agent.qnet(one_hot(state))[:, action]
         Q[state, action] = float(q.data)
 env.render_q(Q)
-
-#env.render_v(None, agent.policy)
