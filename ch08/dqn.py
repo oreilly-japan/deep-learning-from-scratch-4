@@ -29,7 +29,7 @@ class ReplayBuffer:
         action = np.array([x[1] for x in data])
         reward = np.array([x[2] for x in data])
         next_state = np.stack([x[3] for x in data])
-        done = np.array([x[4] for x in data]).astype(np.int)
+        done = np.array([x[4] for x in data]).astype(np.int32)
         return state, action, reward, next_state, done
 
 
@@ -93,7 +93,7 @@ class DQNAgent:
     def sync_qnet(self):
         self.qnet_target = copy.deepcopy(self.qnet)
 
-episodes = 300  # 10000
+episodes = 300
 sync_interval = 20
 env = gym.make('CartPole-v0')
 agent = DQNAgent()
@@ -102,32 +102,28 @@ reward_log = []
 for episode in range(episodes):
     state = env.reset()
     done = False
-    sum_reward = 0
+    total_reward = 0
 
     while not done:
-        if agent.epsilon > 0.05:
-            agent.epsilon -= (1 / 5000)
-        #agent.epsilon = max(0.01, 0.1 - 0.01*(episode/200)) #Linear annealing from 10% to 1%
         action = agent.get_action(state)
         next_state, reward, done, info = env.step(action)
 
         agent.update(state, action, reward, next_state, done)
         state = next_state
-        sum_reward += reward
+        total_reward += reward
 
     if episode % sync_interval == 0:
         agent.sync_qnet()
 
-    reward_log.append(sum_reward)
+    reward_log.append(total_reward)
     if episode % 10 == 0:
-        print("episode :{}, total reward : {}, epsilon: {}".format(episode, sum_reward, agent.epsilon))
+        print("episode :{}, total reward : {}".format(episode, total_reward))
 
 
 # === Plot ===
 plt.xlabel('Episode')
 plt.ylabel('Total Reward')
 plt.plot(range(len(reward_log)), reward_log)
-plt.savefig('8.svg')
 plt.show()
 
 
@@ -136,12 +132,12 @@ agent.qnet.save_weights('dqn.npz')
 agent.epsilon = 0  # greedy policy
 state = env.reset()
 done = False
-sum_reward = 0
+total_reward = 0
 
 while not done:
     action = agent.get_action(state)
     next_state, reward, done, info = env.step(action)
     state = next_state
-    sum_reward += reward
+    total_reward += reward
     env.render()
-print('Total Reward:', sum_reward)
+print('Total Reward:', total_reward)
