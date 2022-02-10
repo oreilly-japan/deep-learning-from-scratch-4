@@ -26,7 +26,6 @@ def plot_total_reward(reward_log):
     plt.xlabel('Episode')
     plt.ylabel('Total Reward')
     plt.plot(range(len(reward_log)), reward_log)
-    #plt.savefig('total_reward.svg')
     plt.show()
 
 
