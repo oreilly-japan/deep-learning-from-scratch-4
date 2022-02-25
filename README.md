@@ -31,7 +31,7 @@
 
 本書では、ディープラーニングのフレームワークとしてDeZeroを使います。DeZeroは「ゼロから作るDeep Learning」シリーズの3作目で作ったフレームワークです（ `pip install dezero` からインストールできます）。
 
-PyTorchを使った実装は [pytorchフォルダ](https://github.com/oreilly-japan/deep-learning-from-scratch-4/tree/master/pytorch)にて提供しています。
+PyTorchを使った実装は[pytorchフォルダ](https://github.com/oreilly-japan/deep-learning-from-scratch-4/tree/master/pytorch)にて提供しています。
 
 ## 実行方法
 各章のフォルダに該当するコードがあります。
