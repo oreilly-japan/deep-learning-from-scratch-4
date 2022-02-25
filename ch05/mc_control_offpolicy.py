@@ -16,7 +16,7 @@ class McOffPolicyAgent:
         self.pi = defaultdict(lambda: random_actions)
         self.b = defaultdict(lambda: random_actions)
         self.Q = defaultdict(lambda: 0)
-        self.experience = []
+        self.memory = []
 
     def get_action(self, state):
         ps = self.b[state]
@@ -25,16 +25,16 @@ class McOffPolicyAgent:
 
     def add(self, state, action, reward):
         data = (state, action, reward)
-        self.experience.append(data)
+        self.memory.append(data)
 
     def reset(self):
-        self.experience.clear()
+        self.memory.clear()
 
     def update(self):
         g = 0
         rho = 1
 
-        for data in reversed(self.experience):
+        for data in reversed(self.memory):
             state, action, reward = data
             key = (state, action)
 

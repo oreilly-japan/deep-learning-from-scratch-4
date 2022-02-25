@@ -13,7 +13,7 @@ class RandomAgent:
         self.pi = defaultdict(lambda: random_actions)
         self.V = defaultdict(lambda: 0)
         self.cnts = defaultdict(lambda: 0)
-        self.experience = []
+        self.memory = []
 
     def get_action(self, state):
         ps = self.pi[state]
@@ -22,14 +22,14 @@ class RandomAgent:
 
     def add(self, state, action, reward):
         data = (state, action, reward)
-        self.experience.append(data)
+        self.memory.append(data)
 
     def reset(self):
-        self.experience.clear()
+        self.memory.clear()
 
     def eval(self):
         g = 0
-        for data in reversed(self.experience):
+        for data in reversed(self.memory):
             state, action, reward = data
             g = self.gamma * g + reward
             self.cnts[state] += 1

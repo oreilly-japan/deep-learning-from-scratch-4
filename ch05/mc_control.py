@@ -24,7 +24,7 @@ class McAgent:
         random_actions = {0: 0.25, 1: 0.25, 2: 0.25, 3: 0.25}
         self.pi = defaultdict(lambda: random_actions)
         self.Q = defaultdict(lambda: 0)
-        self.experience = []
+        self.memory = []
 
     def get_action(self, state):
         ps = self.pi[state]
@@ -33,14 +33,14 @@ class McAgent:
 
     def add(self, state, action, reward):
         data = (state, action, reward)
-        self.experience.append(data)
+        self.memory.append(data)
 
     def reset(self):
-        self.experience.clear()
+        self.memory.clear()
 
     def update(self):
         g = 0
-        for data in reversed(self.experience):
+        for data in reversed(self.memory):
             state, action, reward = data
             g = self.gamma * g + reward
             key = (state, action)

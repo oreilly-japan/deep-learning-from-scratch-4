@@ -15,7 +15,7 @@ class SarsaAgent:
         random_actions = {0: 0.25, 1: 0.25, 2: 0.25, 3: 0.25}
         self.pi = defaultdict(lambda: random_actions)
         self.Q = defaultdict(float)
-        self.experience = deque(maxlen=2)
+        self.memory = deque(maxlen=2)
 
     def get_action(self, state):
         ps = self.pi[state]
@@ -23,14 +23,14 @@ class SarsaAgent:
         return np.random.choice(actions, p=probs)
 
     def reset(self):
-        self.experience.clear()
+        self.memory.clear()
 
     def update(self, state, action, reward, done):
-        self.experience.append((state, action, reward, done))
-        if len(self.experience) < 2:
+        self.memory.append((state, action, reward, done))
+        if len(self.memory) < 2:
             return
-        state, action, reward, done = self.experience[0]
-        next_state, next_action, _, _ = self.experience[1]
+        state, action, reward, done = self.memory[0]
+        next_state, next_action, _, _ = self.memory[1]
         next_q = 0 if done else self.Q[next_state, next_action]
 
         target = reward + self.gamma * next_q
