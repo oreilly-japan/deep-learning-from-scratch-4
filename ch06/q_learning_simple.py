@@ -10,7 +10,7 @@ class QLearningAgent:
         self.alpha = 0.8
         self.epsilon = 0.1
         self.action_size = 4
-        self.Q = defaultdict(float)
+        self.Q = defaultdict(lambda: 0)
 
     def get_action(self, state):
         if np.random.rand() < self.epsilon:

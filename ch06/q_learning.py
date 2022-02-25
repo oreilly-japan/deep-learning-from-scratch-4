@@ -15,7 +15,7 @@ class QLearningAgent:
         random_actions = {0: 0.25, 1: 0.25, 2: 0.25, 3: 0.25}
         self.pi = defaultdict(lambda: random_actions)
         self.b = defaultdict(lambda: random_actions)
-        self.Q = defaultdict(float)
+        self.Q = defaultdict(lambda: 0)
 
     def get_action(self, state):
         ps = self.b[state]
