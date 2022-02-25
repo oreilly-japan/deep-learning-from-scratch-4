@@ -66,7 +66,7 @@ reward_log = []
 for episode in range(3000):
     state = env.reset()
     done = False
-    sum_reward = 0
+    total_reward = 0
 
     while not done:
         action, prob = agent.get_action(state)
@@ -74,13 +74,13 @@ for episode in range(3000):
 
         agent.add(reward, prob)
         state = next_state
-        sum_reward += reward
+        total_reward += reward
 
     agent.update()
 
-    reward_log.append(sum_reward)
+    reward_log.append(total_reward)
     if episode % 100 == 0:
-        print("episode :{}, total reward : {:.1f}".format(episode, sum_reward))
+        print("episode :{}, total reward : {:.1f}".format(episode, total_reward))
 
 
 plot_total_reward(reward_log)  # plot
