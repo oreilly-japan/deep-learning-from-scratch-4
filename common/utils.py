@@ -13,7 +13,7 @@ def argmax(xs):
     return selected
 
 
-def greedy_action_probs(Q, state, epsilon=0, action_size=4):
+def greedy_probs(Q, state, epsilon=0, action_size=4):
     qs = [Q[(state, action)] for action in range(action_size)]
     max_action = argmax(qs)  # OR np.argmax(qs)
     base_prob = epsilon / action_size

@@ -2,10 +2,10 @@ import os, sys; sys.path.append(os.path.join(os.path.dirname(__file__), '..')) #
 import numpy as np
 from collections import defaultdict
 from common.gridworld import GridWorld
-# from common.utils import greedy_action_probs
+# from common.utils import greedy_probs
 
 
-def greedy_action_probs(Q, state, epsilon=0, action_size=4):
+def greedy_probs(Q, state, epsilon=0, action_size=4):
     qs = [Q[(state, action)] for action in range(action_size)]
     max_action = np.argmax(qs)
     base_prob = epsilon / action_size
@@ -45,7 +45,7 @@ class McAgent:
             g = self.gamma * g + reward
             key = (state, action)
             self.Q[key] += (g - self.Q[key]) * self.alpha
-            self.pi[state] = greedy_action_probs(self.Q, state, self.epsilon)
+            self.pi[state] = greedy_probs(self.Q, state, self.epsilon)
 
 
 env = GridWorld()

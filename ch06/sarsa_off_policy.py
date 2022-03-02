@@ -4,7 +4,7 @@ if '__file__' in globals():
 from collections import defaultdict, deque
 import numpy as np
 from common.gridworld import GridWorld
-from common.utils import greedy_action_probs
+from common.utils import greedy_probs
 
 
 class SarsaOffPolicyAgent:
@@ -45,8 +45,8 @@ class SarsaOffPolicyAgent:
         target = rho * (reward + self.gamma * next_q)
         self.Q[state, action] += (target - self.Q[state, action]) * self.alpha
 
-        self.pi[state] = greedy_action_probs(self.Q, state, 0)
-        self.b[state] = greedy_action_probs(self.Q, state, self.epsilon)
+        self.pi[state] = greedy_probs(self.Q, state, 0)
+        self.b[state] = greedy_probs(self.Q, state, self.epsilon)
 
 
 env = GridWorld()

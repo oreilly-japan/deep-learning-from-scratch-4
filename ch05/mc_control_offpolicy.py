@@ -2,7 +2,7 @@ import os, sys; sys.path.append(os.path.join(os.path.dirname(__file__), '..'))  
 from collections import defaultdict
 import numpy as np
 from common.gridworld import GridWorld
-from common.utils import greedy_action_probs
+from common.utils import greedy_probs
 
 
 class McOffPolicyAgent:
@@ -42,8 +42,8 @@ class McOffPolicyAgent:
             self.Q[key] += (g - self.Q[key]) * self.alpha
             rho *= self.pi[state][action] / self.b[state][action]
 
-            self.pi[state] = greedy_action_probs(self.Q, state, epsilon=0)
-            self.b[state] = greedy_action_probs(self.Q, state, self.epsilon)
+            self.pi[state] = greedy_probs(self.Q, state, epsilon=0)
+            self.b[state] = greedy_probs(self.Q, state, self.epsilon)
 
 
 env = GridWorld()
