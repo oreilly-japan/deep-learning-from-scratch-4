@@ -61,7 +61,7 @@ class Agent:
 
 env = gym.make('CartPole-v0')
 agent = Agent()
-reward_log = []
+reward_history = []
 
 for episode in range(3000):
     state = env.reset()
@@ -78,9 +78,9 @@ for episode in range(3000):
 
     agent.update()
 
-    reward_log.append(total_reward)
+    reward_history.append(total_reward)
     if episode % 100 == 0:
         print("episode :{}, total reward : {:.1f}".format(episode, total_reward))
 
 
-plot_total_reward(reward_log)  # plot
+plot_total_reward(reward_history)  # plot

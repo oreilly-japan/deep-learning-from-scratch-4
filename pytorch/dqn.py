@@ -98,7 +98,7 @@ episodes = 300
 sync_interval = 20
 env = gym.make('CartPole-v0')
 agent = DQNAgent()
-reward_log = []
+reward_history = []
 
 for episode in range(episodes):
     state = env.reset()
@@ -116,6 +116,6 @@ for episode in range(episodes):
     if episode % sync_interval == 0:
         agent.sync_qnet()
 
-    reward_log.append(total_reward)
+    reward_history.append(total_reward)
     if episode % 10 == 0:
         print("episode :{}, total reward : {}".format(episode, total_reward))
