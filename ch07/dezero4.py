@@ -5,7 +5,7 @@ from dezero import optimizers
 import dezero.layers as L
 import dezero.functions as F
 
-# データセットの生成
+# Dataset
 np.random.seed(0)
 x = np.random.rand(100, 1)
 y = np.sin(2 * np.pi * x) + np.random.rand(100, 1)
@@ -25,7 +25,7 @@ class TwoLayerNet(Model):
         return y
 
 model = TwoLayerNet(10, 1)
-optimizer = optimizers.SGD(lr)  # オプティマイザのr生成
+optimizer = optimizers.SGD(lr)
 optimizer.setup(model)
 
 for i in range(iters):
@@ -35,9 +35,9 @@ for i in range(iters):
     model.cleargrads()
     loss.backward()
 
-    optimizer.update()  # オプティマイザによる更新
+    optimizer.update()
     if i % 1000 == 0:
-        print(loss)
+        print(loss.data)
 
 # Plot
 plt.scatter(x, y, s=10)
