@@ -33,7 +33,13 @@ for i in range(iters):
 
     W.data -= lr * W.grad.data
     b.data -= lr * b.grad.data
-print(W, b, loss)
+
+    if i % 10 == 0:
+        print(loss.data)
+
+print('====')
+print('W =', W.data)
+print('b =', b.data)
 
 # Plot
 plt.scatter(x.data, y.data, s=10)
