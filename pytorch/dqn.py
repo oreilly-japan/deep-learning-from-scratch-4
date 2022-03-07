@@ -81,10 +81,10 @@ class DQNAgent:
         next_q = next_qs.max(1)[0]
 
         next_q.detach()
-        td_target = reward + (1 - done) * self.gamma * next_q
+        target = reward + (1 - done) * self.gamma * next_q
 
         loss_fn = nn.MSELoss()
-        loss = loss_fn(q, td_target)
+        loss = loss_fn(q, target)
 
         self.optimizer.zero_grad()
         loss.backward()

@@ -50,18 +50,19 @@ class Agent:
         G, loss = 0, 0
         for reward, prob in reversed(self.memory):
             G = reward + self.gamma * G
-            loss += - F.log(prob) * G
+            loss += -F.log(prob) * G
 
         loss.backward()
         self.optimizer.update()
         self.memory = []
 
 
+episodes = 3000
 env = gym.make('CartPole-v0')
 agent = Agent()
 reward_history = []
 
-for episode in range(3000):
+for episode in range(episodes):
     state = env.reset()
     done = False
     sum_reward = 0
