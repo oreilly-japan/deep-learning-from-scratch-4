@@ -38,7 +38,7 @@ class ValueNet(nn.Module):
 class Agent:
     def __init__(self):
         self.gamma = 0.98
-        self.lr_pi = 0.0005
+        self.lr_pi = 0.0002
         self.lr_v = 0.0005
         self.action_size = 2
 
@@ -60,13 +60,13 @@ class Agent:
         state = torch.tensor(state[np.newaxis, :])
         next_state = torch.tensor(next_state[np.newaxis, :])
 
-        td_target = reward + self.gamma * self.v(next_state) * (1 - done)
-        td_target.detach()
+        target = reward + self.gamma * self.v(next_state) * (1 - done)
+        target.detach()
         v = self.v(state)
         loss_fn = nn.MSELoss()
-        loss_v = loss_fn(v, td_target)
+        loss_v = loss_fn(v, target)
 
-        delta = td_target - v
+        delta = target - v
         loss_pi = -torch.log(action_prob) * delta.item()
 
         self.optimizer_v.zero_grad()

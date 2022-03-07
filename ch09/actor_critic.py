@@ -13,7 +13,7 @@ from common.utils import plot_total_reward
 class PolicyNet(Model):
     def __init__(self, action_size=2):
         super().__init__()
-        self.l1 = L.Linear(256)
+        self.l1 = L.Linear(128)
         self.l2 = L.Linear(action_size)
 
     def forward(self, x):
@@ -26,7 +26,7 @@ class PolicyNet(Model):
 class ValueNet(Model):
     def __init__(self):
         super().__init__()
-        self.l1 = L.Linear(256)
+        self.l1 = L.Linear(128)
         self.l2 = L.Linear(1)
 
     def forward(self, x):
@@ -38,8 +38,8 @@ class ValueNet(Model):
 class Agent:
     def __init__(self):
         self.gamma = 0.98
-        self.lr_pi = 0.0001
-        self.lr_v = 0.0001
+        self.lr_pi = 0.0002
+        self.lr_v = 0.0005
         self.action_size = 2
 
         self.pi = PolicyNet()
@@ -49,41 +49,45 @@ class Agent:
         self.optimizer_v = optimizers.Adam(self.lr_v).setup(self.v)
 
     def get_action(self, state):
-        state = np.atleast_2d(state) #state[np.newaxis, :]  # add batch axis
+        state = state[np.newaxis, :]  # add batch axis
         probs = self.pi(state)
         probs = probs[0]
-        action = np.random.choice([0, 1], p=probs.data)
+        action = np.random.choice(len(probs), p=probs.data)
         return action, probs[action]
 
     def update(self, state, action_prob, reward, next_state, done):
-        state = np.atleast_2d(state)  # add batch axis
-        next_state = np.atleast_2d(next_state)
+        state = state[np.newaxis, :]  # add batch axis
+        next_state = next_state[np.newaxis, :]
 
-        td_target = reward + self.gamma * self.v(next_state) * (1 - done)
-        td_target.unchain()
+        # ========== (1) Update V network ===========
+        target = reward + self.gamma * self.v(next_state) * (1 - done)
+        target.unchain()
         v = self.v(state)
-        loss_v = F.mean_squared_error(v, td_target)
+        loss_v = F.mean_squared_error(v, target)
 
-        delta = td_target - v
+        self.v.cleargrads()
+        loss_v.backward()
+        self.optimizer_v.update()
+
+        # ========== (2) Update pi network ===========
+        delta = target - v
         delta.unchain()
         loss_pi = -F.log(action_prob) * delta
 
-        self.v.cleargrads()
         self.pi.cleargrads()
-        loss_v.backward()
         loss_pi.backward()
-        self.optimizer_v.update()
         self.optimizer_pi.update()
 
 
+episodes = 3000
 env = gym.make('CartPole-v0')
 agent = Agent()
-reward_log = {}
+reward_history = []
 
-for episode in range(3000):
+for episode in range(episodes):
     state = env.reset()
     done = False
-    sum_reward = 0
+    total_reward = 0
 
     while not done:
         action, prob = agent.get_action(state)
@@ -92,10 +96,10 @@ for episode in range(3000):
         agent.update(state, prob, reward, next_state, done)
 
         state = next_state
-        sum_reward += reward
+        total_reward += reward
 
-    reward_log[episode] = sum_reward
+    reward_history.append(total_reward)
     if episode % 100 == 0:
-        print("episode :{}, total reward : {:.1f}".format(episode, sum_reward))
+        print("episode :{}, total reward : {:.1f}".format(episode, total_reward))
 
-plot_total_reward(reward_log)
+plot_total_reward(reward_history)
