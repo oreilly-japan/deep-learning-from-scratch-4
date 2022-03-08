@@ -8,6 +8,7 @@ from common.gridworld import GridWorld
 def greedy_probs(Q, state, epsilon=0, action_size=4):
     qs = [Q[(state, action)] for action in range(action_size)]
     max_action = np.argmax(qs)
+
     base_prob = epsilon / action_size
     action_probs = {action: base_prob for action in range(action_size)}  #{0: ε/4, 1: ε/4, 2: ε/4, 3: ε/4}
     action_probs[max_action] += (1 - epsilon)
@@ -27,8 +28,9 @@ class McAgent:
         self.memory = []
 
     def get_action(self, state):
-        ps = self.pi[state]
-        actions, probs = list(ps.keys()), list(ps.values())
+        action_probs = self.pi[state]
+        actions = list(action_probs.keys())
+        probs = list(action_probs.values())
         return np.random.choice(actions, p=probs)
 
     def add(self, state, action, reward):
@@ -39,12 +41,12 @@ class McAgent:
         self.memory.clear()
 
     def update(self):
-        g = 0
+        G = 0
         for data in reversed(self.memory):
             state, action, reward = data
-            g = self.gamma * g + reward
+            G = self.gamma * G + reward
             key = (state, action)
-            self.Q[key] += (g - self.Q[key]) * self.alpha
+            self.Q[key] += (G - self.Q[key]) * self.alpha
             self.pi[state] = greedy_probs(self.Q, state, self.epsilon)
 
 

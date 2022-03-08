@@ -7,7 +7,6 @@ from dezero import Model
 from dezero import optimizers
 import dezero.functions as F
 import dezero.layers as L
-from common.utils import plot_total_reward
 
 
 class Policy(Model):
@@ -82,4 +81,6 @@ for episode in range(episodes):
         print("episode :{}, total reward : {:.1f}".format(episode, sum_reward))
 
 
-plot_total_reward(reward_history)  # plot
+# plot
+from common.utils import plot_total_reward
+plot_total_reward(reward_history)

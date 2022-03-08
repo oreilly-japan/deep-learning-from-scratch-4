@@ -14,7 +14,7 @@ class GridWorld:
 
         self.reward_map = np.array(
             [[0, 0, 0, 1.0],
-             [0, 0, 0, -1.0],
+             [0, None, 0, -1.0],
              [0, 0, 0, 0]]
         )
         self.goal_state = (0, 3)

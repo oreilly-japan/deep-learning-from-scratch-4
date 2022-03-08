@@ -56,7 +56,7 @@ class Renderer:
             for x in range(xs):
                 state = (y, x)
                 r = self.reward_map[y, x]
-                if r != 0:
+                if r != 0 and r is not None:
                     txt = 'R ' + str(r)
                     if state == self.goal_state:
                         txt = txt + ' (GOAL)'
@@ -110,7 +110,7 @@ class Renderer:
                 for action in action_space:
                     state = (y, x)
                     r = self.reward_map[y, x]
-                    if r != 0:
+                    if r != 0 and r is not None:
                         txt = 'R ' + str(r)
                         if state == self.goal_state:
                             txt = txt + ' (GOAL)'

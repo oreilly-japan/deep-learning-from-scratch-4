@@ -71,12 +71,12 @@ env = GridWorld()
 agent = QLearningAgent()
 
 episodes = 1000
-loss_list = []
+loss_history = []
 
 for episode in range(episodes):
     state = env.reset()
     state_vec = one_hot(state)
-    avg_loss = []
+    total_loss, cnt = 0, 0
     done = False
 
     while not done:
@@ -85,16 +85,17 @@ for episode in range(episodes):
 
         next_state_vec = one_hot(next_state)
         loss = agent.update(state_vec, action, reward, next_state_vec, done)
-        avg_loss.append(loss)
-
+        total_loss += loss
+        cnt += 1
         state_vec = next_state_vec
 
-    loss_list.append(np.average(avg_loss))
+    average_loss = total_loss / cnt
+    loss_history.append(average_loss)
 
 
 plt.xlabel('episode')
 plt.ylabel('loss')
-plt.plot(range(len(loss_list)), loss_list)
+plt.plot(range(len(loss_history)), loss_history)
 plt.show()
 
 # visualize

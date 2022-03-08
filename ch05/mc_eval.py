@@ -16,8 +16,9 @@ class RandomAgent:
         self.memory = []
 
     def get_action(self, state):
-        ps = self.pi[state]
-        actions, probs = list(ps.keys()), list(ps.values())
+        action_probs = self.pi[state]
+        actions = list(action_probs.keys())
+        probs = list(action_probs.values())
         return np.random.choice(actions, p=probs)
 
     def add(self, state, action, reward):
@@ -28,12 +29,12 @@ class RandomAgent:
         self.memory.clear()
 
     def eval(self):
-        g = 0
+        G = 0
         for data in reversed(self.memory):
             state, action, reward = data
-            g = self.gamma * g + reward
+            G = self.gamma * G + reward
             self.cnts[state] += 1
-            self.V[state] += (g - self.V[state]) / self.cnts[state]
+            self.V[state] += (G - self.V[state]) / self.cnts[state]
 
 
 env = GridWorld()

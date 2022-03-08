@@ -128,7 +128,6 @@ plt.show()
 
 
 # === Play CartPole ===
-agent.qnet.save_weights('dqn.npz')
 agent.epsilon = 0  # greedy policy
 state = env.reset()
 done = False

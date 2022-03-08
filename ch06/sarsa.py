@@ -18,8 +18,9 @@ class SarsaAgent:
         self.memory = deque(maxlen=2)
 
     def get_action(self, state):
-        ps = self.pi[state]
-        actions, probs = list(ps.keys()), list(ps.values())
+        action_probs = self.pi[state]
+        actions = list(action_probs.keys())
+        probs = list(action_probs.values())
         return np.random.choice(actions, p=probs)
 
     def reset(self):
@@ -29,6 +30,7 @@ class SarsaAgent:
         self.memory.append((state, action, reward, done))
         if len(self.memory) < 2:
             return
+
         state, action, reward, done = self.memory[0]
         next_state, next_action, _, _ = self.memory[1]
         next_q = 0 if done else self.Q[next_state, next_action]

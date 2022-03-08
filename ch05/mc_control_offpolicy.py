@@ -19,8 +19,9 @@ class McOffPolicyAgent:
         self.memory = []
 
     def get_action(self, state):
-        ps = self.b[state]
-        actions, probs = list(ps.keys()), list(ps.values())
+        action_probs = self.b[state]
+        actions = list(action_probs.keys())
+        probs = list(action_probs.values())
         return np.random.choice(actions, p=probs)
 
     def add(self, state, action, reward):
@@ -31,15 +32,15 @@ class McOffPolicyAgent:
         self.memory.clear()
 
     def update(self):
-        g = 0
+        G = 0
         rho = 1
 
         for data in reversed(self.memory):
             state, action, reward = data
             key = (state, action)
 
-            g = self.gamma * rho * g + reward
-            self.Q[key] += (g - self.Q[key]) * self.alpha
+            G = self.gamma * rho * G + reward
+            self.Q[key] += (G - self.Q[key]) * self.alpha
             rho *= self.pi[state][action] / self.b[state][action]
 
             self.pi[state] = greedy_probs(self.Q, state, epsilon=0)

@@ -18,8 +18,9 @@ class QLearningAgent:
         self.Q = defaultdict(lambda: 0)
 
     def get_action(self, state):
-        ps = self.b[state]
-        actions, probs = list(ps.keys()), list(ps.values())
+        action_probs = self.b[state]
+        actions = list(action_probs.keys())
+        probs = list(action_probs.values())
         return np.random.choice(actions, p=probs)
 
     def update(self, state, action, reward, next_state, done):

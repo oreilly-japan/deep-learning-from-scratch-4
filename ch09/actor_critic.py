@@ -7,7 +7,6 @@ from dezero import Model
 from dezero import optimizers
 import dezero.functions as F
 import dezero.layers as L
-from common.utils import plot_total_reward
 
 
 class PolicyNet(Model):
@@ -44,7 +43,6 @@ class Agent:
 
         self.pi = PolicyNet()
         self.v = ValueNet()
-
         self.optimizer_pi = optimizers.Adam(self.lr_pi).setup(self.pi)
         self.optimizer_v = optimizers.Adam(self.lr_v).setup(self.v)
 
@@ -65,17 +63,16 @@ class Agent:
         v = self.v(state)
         loss_v = F.mean_squared_error(v, target)
 
-        self.v.cleargrads()
-        loss_v.backward()
-        self.optimizer_v.update()
-
         # ========== (2) Update pi network ===========
         delta = target - v
         delta.unchain()
         loss_pi = -F.log(action_prob) * delta
 
+        self.v.cleargrads()
         self.pi.cleargrads()
+        loss_v.backward()
         loss_pi.backward()
+        self.optimizer_v.update()
         self.optimizer_pi.update()
 
 
@@ -102,4 +99,7 @@ for episode in range(episodes):
     if episode % 100 == 0:
         print("episode :{}, total reward : {:.1f}".format(episode, total_reward))
 
+
+# plot
+from common.utils import plot_total_reward
 plot_total_reward(reward_history)
