@@ -47,16 +47,16 @@ class QLearningAgent:
             qs = self.qnet(state_vec)
             return qs.data.argmax()
 
-    def update(self, state_vec, action, reward, next_state_vec, done):
+    def update(self, state, action, reward, next_state, done):
         if done:
             next_q = np.zeros(1)  # [0.]
         else:
-            next_qs = self.qnet(next_state_vec)
+            next_qs = self.qnet(next_state)
             next_q = next_qs.max(axis=1)
             next_q.unchain()
 
         target = self.gamma * next_q + reward
-        qs = self.qnet(state_vec)
+        qs = self.qnet(state)
         q = qs[:, action]
         loss = F.mean_squared_error(target, q)
 
@@ -75,19 +75,19 @@ loss_history = []
 
 for episode in range(episodes):
     state = env.reset()
-    state_vec = one_hot(state)
+    state = one_hot(state)
     total_loss, cnt = 0, 0
     done = False
 
     while not done:
-        action = agent.get_action(state_vec)
+        action = agent.get_action(state)
         next_state, reward, done = env.step(action)
+        next_state = one_hot(next_state)
 
-        next_state_vec = one_hot(next_state)
-        loss = agent.update(state_vec, action, reward, next_state_vec, done)
+        loss = agent.update(state, action, reward, next_state, done)
         total_loss += loss
         cnt += 1
-        state_vec = next_state_vec
+        state = next_state
 
     average_loss = total_loss / cnt
     loss_history.append(average_loss)
