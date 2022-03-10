@@ -39,10 +39,10 @@ PyTorchを使った実装は[pytorchフォルダ](https://github.com/oreilly-jap
 
 ```
 $ python ch01/avg.py
-$ python ch02/gridworld_1d.py
+$ python ch08/dqn.py
 
-$ cd ch04
-$ python dp.py
+$ cd ch09
+$ python actor_critic.py
 ```
 
 ## ライセンス
