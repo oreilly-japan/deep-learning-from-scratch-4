@@ -11,7 +11,7 @@
 |...        |...                          |
 |ch09       |9章で使用するソースコード    |
 |common     |共通で使用するソースコード   |
-|notebooks       |Jupyterノートブック   |
+|notebooks       |Jupyter Notebook形式のソースコード   |
 |pytorch     |PyTorchに移植したソースコード   |
 
 
