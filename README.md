@@ -3,6 +3,14 @@
 書籍『[ゼロから作るDeep Learning ❹ 強化学習編](https://www.amazon.co.jp/dp/4873119758)』(オライリー・ジャパン)のサポートサイトです。本書籍で使用するソースコードがまとめられています。
 
 
+## ニュース
+<a href="https://koki0702.github.io/dezero-p100/"><img src="https://raw.githubusercontent.com/oreilly-japan/deep-learning-from-scratch-4/images/p100.png" height="200px"></a>
+
+本書の内容を確認するための「強化学習100題」を用意しています。
+
+https://koki0702.github.io/dezero-p100/
+
+
 ## ファイル構成
 
 |フォルダ名 |説明                         |
@@ -14,8 +22,6 @@
 |notebooks       |Jupyter Notebook形式のソースコード   |
 |pytorch     |PyTorchに移植したソースコード   |
 
-
-ソースコードの解説は、本書籍をご覧ください。
 
 ## Jupyter Notebook
 本書のコードはJupyter Notebookでも用意しています。次の表にあるボタンをクリックすることで、Google ColabやKaggle Notebookなどのクラウドサービス上でNotebookを実行することができます。
