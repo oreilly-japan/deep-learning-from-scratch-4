@@ -4,7 +4,7 @@ import numpy as np
 from common.gridworld import GridWorld
 
 env = GridWorld()
-
+ 
 class TdAgent:
     def __init__(self):
         self.gamma = 0.9
@@ -24,14 +24,14 @@ class TdAgent:
 
     def eval(self, state, reward, next_state, done):
       next_V = 0 if done else self.V[next_state]
-      target = reward + self.gamma * next_V  
+      target = reward + self.gamma * next_V
       for h in range(env.height):
           for w in range(env.width):
             #エリジビリティトレースを更新
             if state == (h, w):
                 self.z[state] = 1 + self.gamma*self.xi*self.z[state]
             else:
-                self.z[state] =self.gamma*self.xi*self.z[state]       
+                self.z[state] =self.gamma*self.xi*self.z[state]
             self.V[state] += (target - self.V[state]) * self.alpha * self.z[state]
 
 agent = TdAgent()
