@@ -77,7 +77,7 @@ class Agent:
         self.optimizer_pi.step()
 
 
-env = gym.make('CartPole-v1')
+env = gym.make('CartPole-v0')
 agent = Agent()
 reward_history = []
 
