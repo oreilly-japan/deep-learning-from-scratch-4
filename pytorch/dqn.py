@@ -101,13 +101,13 @@ agent = DQNAgent()
 reward_history = []
 
 for episode in range(episodes):
-    state = env.reset()
+    state = env.reset()[0]
     done = False
     total_reward = 0
 
     while not done:
         action = agent.get_action(state)
-        next_state, reward, done, info = env.step(action)
+        next_state, reward, done, info = env.step(action)[0:4]
 
         agent.update(state, action, reward, next_state, done)
         state = next_state
