@@ -9,5 +9,5 @@ done = False
 while not done:
     env.render()
     action = np.random.choice([0, 1])
-    next_state, reward, done, info = env.step(action)[0:4]
+    next_state, reward, done, info = env.step(action)
 env.close()
