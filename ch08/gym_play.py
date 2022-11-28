@@ -3,11 +3,11 @@ import gym
 
 
 env = gym.make('CartPole-v0')
-state = env.reset()
+state = env.reset()[0]
 done = False
 
 while not done:
     env.render()
     action = np.random.choice([0, 1])
-    next_state, reward, done, info = env.step(action)
+    next_state, reward, done, info = env.step(action)[0:4]
 env.close()

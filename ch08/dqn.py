@@ -135,7 +135,7 @@ total_reward = 0
 
 while not done:
     action = agent.get_action(state)
-    next_state, reward, done, info = env.step(action)[0:4]
+    next_state, reward, done, info = env.step(action)
     state = next_state
     total_reward += reward
     env.render()
