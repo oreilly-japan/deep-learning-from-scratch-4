@@ -95,18 +95,18 @@ class DQNAgent:
 
 episodes = 300
 sync_interval = 20
-env = gym.make('CartPole-v0')
+env = gym.make('CartPole-v0', render_mode='rgb_array')
 agent = DQNAgent()
 reward_history = []
 
 for episode in range(episodes):
-    state = env.reset()
+    state, _ = env.reset()
     done = False
     total_reward = 0
 
     while not done:
         action = agent.get_action(state)
-        next_state, reward, done, info = env.step(action)
+        next_state, reward, done, _, _ = env.step(action)
 
         agent.update(state, action, reward, next_state, done)
         state = next_state
@@ -129,13 +129,13 @@ plt.show()
 
 # === Play CartPole ===
 agent.epsilon = 0  # greedy policy
-state = env.reset()
+state, _ = env.reset()
 done = False
 total_reward = 0
 
 while not done:
     action = agent.get_action(state)
-    next_state, reward, done, info = env.step(action)
+    next_state, reward, done, _, _ = env.step(action)
     state = next_state
     total_reward += reward
     env.render()
