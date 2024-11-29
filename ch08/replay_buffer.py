@@ -31,12 +31,12 @@ env = gym.make('CartPole-v0')
 replay_buffer = ReplayBuffer(buffer_size=10000, batch_size=32)
 
 for episode in range(10):
-    state = env.reset()
+    state = env.reset()[0]
     done = False
 
     while not done:
         action = 0
-        next_state, reward, done, info = env.step(action)
+        next_state, reward, done, info = env.step(action)[0:4]
         replay_buffer.add(state, action, reward, next_state, done)
         state = next_state
 
