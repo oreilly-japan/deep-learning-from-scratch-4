@@ -1,0 +1,7 @@
+numpy==1.22.0
+scipy==1.8.0
+matplotlib==3.5.0
+torch==1.8.0
+gym==0.23.0
+dezero==0.0.13
+pygame==2.1.2

@@ -75,7 +75,8 @@ class DQNAgent:
 
         state, action, reward, next_state, done = self.replay_buffer.get_batch()
         qs = self.qnet(state)
-        q = qs[np.arange(len(action)), action]
+        # q = qs[np.arange(len(action)), action]
+        q = qs[torch.arange(len(action)), action.long()]
 
         next_qs = self.qnet_target(next_state)
         next_q = next_qs.max(1)[0]
