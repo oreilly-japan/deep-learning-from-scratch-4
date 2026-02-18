@@ -30,6 +30,8 @@ class Agent:
         self.optimizer = optim.Adam(self.pi.parameters(), lr=self.lr)
 
     def get_action(self, state):
+        if isinstance(state, tuple):
+            state = state[0]  # Extract the actual state from the tuple
         state = torch.tensor(state[np.newaxis, :])
         probs = self.pi(state)
         probs = probs[0]
@@ -64,7 +66,8 @@ for episode in range(3000):
 
     while not done:
         action, prob = agent.get_action(state)
-        next_state, reward, done, info = env.step(action)
+        next_state, reward, terminated, truncated, info = env.step(action)
+        done = terminated or truncated
 
         agent.add(reward, prob)
         state = next_state

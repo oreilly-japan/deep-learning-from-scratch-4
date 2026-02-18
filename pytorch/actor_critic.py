@@ -83,13 +83,23 @@ reward_history = []
 
 for episode in range(2000):
     state = env.reset()
+    if isinstance(state, tuple):
+        state = state[0]
     done = False
     total_reward = 0
 
     while not done:
         action, prob = agent.get_action(state)
-        next_state, reward, done, info = env.step(action)
-
+        try:
+            # For newer gym versions (>=0.26.0)
+            next_state, reward, terminated, truncated, info = env.step(action)
+            done = terminated or truncated
+        except ValueError:
+            # For older gym versions
+            next_state, reward, done, info = env.step(action)
+            if isinstance(info, dict) and 'TimeLimit.truncated' in info:
+                done = done and not info['TimeLimit.truncated']
+        
         agent.update(state, prob, reward, next_state, done)
 
         state = next_state
